@@ -47,7 +47,7 @@ fun StatefulTemperatureInput(
     modifier: Modifier = Modifier,
     ) {
     var input by remember { mutableStateOf("") }
-    var output = ""
+    var output by remember { mutableStateOf("") }
     Column(modifier.padding(16.dp)) {
         Text(
             text = stringResource(R.string.stateful_converter),
@@ -59,11 +59,17 @@ fun StatefulTemperatureInput(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = { newInput ->
                 input = newInput
+                output = convertToFahrenheit(newInput)
             },
         )
         Text(stringResource(R.string.temperature_fahrenheit, output))
     }
 }
+
+private fun convertToFahrenheit(celcius: String) =
+    celcius.toDoubleOrNull()?.let {
+        (it * 9 / 5) + 32
+    }.toString()
 
 @Preview(showBackground = true)
 @Composable
